@@ -16,15 +16,17 @@
 # ※ 공지 - 2019년 2월 28일 지문이 리뉴얼되었습니다.
 
 def solution(prices):
-    term = 0
     results = []
-    check = list(range(0, len(prices)))
+    for i in range(len(prices)-2):
+        count = 0
+        for check in range(i, len(prices)-1):
+            count += 1
+            if prices[i] <= prices[check+1]:
+                continue
+            else:
+                break
+        results.append(count)
     
-    for i in range(len(prices)-1):
-        results.append(1)
-        
-        for r in range(len(results)):
-            if (prices[r] <= prices[i] and results[r] == i-r):
-                results[r] += 1
+    results.append(1)
     results.append(0)
     return results
