@@ -1,4 +1,4 @@
-# 이해못함
+#이해안됨
 how_many = int(input())
 lines = []
 for i in range(how_many):
@@ -6,19 +6,23 @@ for i in range(how_many):
     line = list(map(int, input().split()))
     lines.append(line)
 
-for line in lines: 
-    sum = [line[0]]
-    for i in line[1:]: 
-        sum.append(i + sum[-1]) 
-    accumulated = [[0] * len(line) for _ in range(len(line))]
-    
-    accumulated[0][1] = sum[1] 
-    for i in range(1, len(line) - 1):
-        accumulated[i][i + 1] = sum[i + 1] - sum[i - 1] 
-    for gap in range(2, len(line)): 
-        for i in range(len(line) - gap): 
-            accumulated[i][i + gap] = float('inf') 
-            for j in range(i, i + gap): 
-                accumulated[i][i + gap] = min(accumulated[i][i + gap], accumulated[i][j] + accumulated[j + 1][i + gap]) 
-            accumulated[i][i + gap] = accumulated[i][i + gap] + sum[i + gap] - sum[i - 1] if i > 0 else accumulated[0][gap] + sum[gap]
-    print(accumulated[0][len(line) - 1])
+for line in lines:
+    length = len(line)
+    max_int = sum(line) * length
+    dp = [[0]*(length+1) for i in range(length+1)]
+    costs = [line[0]]
+
+    for i in range(1, length):
+        costs.append(costs[i-1]+line[i])
+    costs.append(0)
+
+    for gap in range(1, length):
+        for start in range(length):
+            end = start + gap
+            if end == length:
+                break
+            dp[start][end] = max_int
+            for i in range(start, end):
+                candidate = dp[start][i] + dp[i+1][end] + (costs[end]-costs[start-1])
+                dp[start][end] = min(dp[start][end], candidate)
+    print(dp[0][length-1])
