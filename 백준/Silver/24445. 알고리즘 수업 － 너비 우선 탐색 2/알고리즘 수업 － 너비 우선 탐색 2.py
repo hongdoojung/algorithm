@@ -1,12 +1,11 @@
 import sys
-from collections import deque
 import heapq
 
 
 def bfs(E, V, Q):
     i = 2
     while Q:
-        u = Q.popleft()
+        u = Q.pop(0)
         heap = []
         for v in E[u]:
             if not V.get(v):
@@ -28,7 +27,7 @@ def main():
         E[a].append(b)
         E[b].append(a)
 
-    Q = deque()
+    Q = []
     Q.append(R)
     V.update({R: 1})
 
